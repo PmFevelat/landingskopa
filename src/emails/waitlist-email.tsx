@@ -6,9 +6,15 @@ interface EmailTemplateProps {
 
 export default function WaitlistEmail({ email }: EmailTemplateProps) {
     return (
-        <div>
-            <h1>Nouvelle inscription à la waitlist</h1>
-            <p>Email: {email}</p>
-        </div>
+        <Html>
+            <Head />
+            <Body style={{ fontFamily: 'system-ui' }}>
+                <Container>
+                    <Text>Nouvelle inscription à la waitlist :</Text>
+                    <Hr />
+                    <Text><strong>Email :</strong> {email}</Text>
+                </Container>
+            </Body>
+        </Html>
     );
 } 
