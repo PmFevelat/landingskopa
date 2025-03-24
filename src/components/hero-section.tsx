@@ -134,7 +134,7 @@ export default function HeroSection() {
                                             size="lg"
                                             className="px-5 text-base">
                                             <Link href="#link">
-                                                <span className="text-nowrap">Request a demo</span>
+                                                <span className="text-nowrap">Join the Waitlist</span>
                                             </Link>
                                         </Button>
                                     </div>
