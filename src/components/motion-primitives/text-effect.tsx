@@ -103,7 +103,10 @@ const presetVariants: Record<
 
 const splitText = (text: string, per: PerType) => {
   if (per === 'line') return text.split('\n');
-  return text.split(/(\s+)/);
+  return text.split(' ').reduce((acc: string[], word, i) => {
+    if (i === 0) return [word];
+    return [...acc, ' ', word];
+  }, []);
 };
 
 export function TextEffect({
@@ -168,13 +171,17 @@ export function TextEffect({
         >
           {per !== 'line' ? <span className="sr-only">{children}</span> : null}
           {segments.map((segment, index) => (
-            <motion.span
-              key={`${per}-${index}-${segment}`}
-              variants={computedVariants.item}
-              className={cn('inline-block', segmentWrapperClassName)}
-            >
-              {segment}
-            </motion.span>
+            segment === ' ' ? (
+              <span key={`space-${index}`}> </span>
+            ) : (
+              <motion.span
+                key={`${per}-${index}-${segment}`}
+                variants={computedVariants.item}
+                className={cn('inline-block', segmentWrapperClassName)}
+              >
+                {segment}
+              </motion.span>
+            )
           ))}
         </MotionTag>
       )}
