@@ -82,7 +82,7 @@ export default function HeroSection() {
                                     speedSegment={0.3}
                                     as="h1"
                                     className="mt-8 text-balance text-6xl md:text-7xl lg:mt-16 xl:text-[5.25rem]">
-                                    Choose Software with Confidence
+                                    Don't choose software like it's 2010.
                                 </TextEffect>
                                 <TextEffect
                                     per="line"
@@ -91,7 +91,7 @@ export default function HeroSection() {
                                     delay={0.5}
                                     as="p"
                                     className="mx-auto mt-8 max-w-2xl text-balance text-lg">
-                                    Visualize market trends and network adoption in real-time to make smarter, data-backed software decisions.
+                                    Say goodbye to outdated listings and star ratings. Skopa recommends based on your stage, your goals, and real company data.
                                 </TextEffect>
 
                                 <AnimatedGroup
@@ -136,25 +136,25 @@ export default function HeroSection() {
                             <div className="relative -mr-56 mt-8 overflow-hidden px-2 sm:mr-0 sm:mt-12 md:mt-20">
                                 <div
                                     aria-hidden
-                                    className="absolute inset-y-0 left-0 z-10 w-[35%] bg-gradient-to-r from-background via-background/50 to-transparent"
+                                    className="absolute inset-y-0 left-0 z-10 w-[25%] bg-gradient-to-r from-background/80 via-background/30 to-transparent"
                                 />
                                 <div
                                     aria-hidden
-                                    className="absolute inset-y-0 right-0 z-10 w-[35%] bg-gradient-to-l from-background via-background/50 to-transparent"
+                                    className="absolute inset-y-0 right-0 z-10 w-[25%] bg-gradient-to-l from-background/80 via-background/30 to-transparent"
                                 />
                                 <div className="relative mx-auto max-w-6xl overflow-hidden rounded-2xl bg-background">
                                     <Image
                                         className="hidden bg-background aspect-15/8 relative w-full dark:block"
-                                        src="/network-graph.png"
-                                        alt="Network visualization"
+                                        src="/images/hero.png"
+                                        alt="Hero visualization"
                                         width={2278}
                                         height={1320}
                                         priority
                                     />
                                     <Image
                                         className="aspect-15/8 relative w-full dark:hidden"
-                                        src="/network-graph.png"
-                                        alt="Network visualization"
+                                        src="/images/hero.png"
+                                        alt="Hero visualization"
                                         width={2278}
                                         height={1320}
                                         priority

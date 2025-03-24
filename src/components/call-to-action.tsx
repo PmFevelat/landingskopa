@@ -44,7 +44,7 @@ export default function CallToAction() {
             <div className="absolute inset-0 -z-10 bg-gradient-to-t from-background via-background/80 to-background/20"></div>
             <div className="mx-auto max-w-5xl px-6">
                 <div className="relative text-center">
-                    <h2 className="text-balance text-4xl font-semibold lg:text-5xl">Ready to make smarter software decisions?</h2>
+                    <h2 className="text-balance text-4xl font-semibold lg:text-5xl">Tired of endless reviews? Try a smarter way to choose.</h2>
 
                     <div className="mt-10 flex justify-center lg:mt-12">
                         <div className="bg-foreground/10 rounded-[var(--radius)] border p-0.5">
