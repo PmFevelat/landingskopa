@@ -1,6 +1,6 @@
 'use client';
 import { ReactNode } from 'react';
-import { motion, Variants } from 'motion/react';
+import { motion, Variants, HTMLMotionProps } from 'motion/react';
 import React, { JSX } from 'react';
 
 export type PresetType =
@@ -115,14 +115,8 @@ function AnimatedGroup({
   const containerVariants = variants?.container || selectedVariants.container;
   const itemVariants = variants?.item || selectedVariants.item;
 
-  const MotionComponent = React.useMemo(
-    () => motion[as as keyof typeof motion],
-    [as]
-  );
-  const MotionChild = React.useMemo(
-    () => motion[asChild as keyof typeof motion],
-    [asChild]
-  );
+  const MotionComponent = motion(as) as React.ComponentType<HTMLMotionProps<typeof as>>;
+  const MotionChild = motion(asChild) as React.ComponentType<HTMLMotionProps<typeof asChild>>;
 
   return (
     <MotionComponent
