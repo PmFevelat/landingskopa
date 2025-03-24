@@ -1,4 +1,4 @@
-import { AnimatedGroup } from '@/components/motion-primitives/animated-group'
+import { AnimatedGroup } from './motion-primitives/animated-group'
 import Image from 'next/image'
 
 export default function BackgroundStars() {
