@@ -1,10 +1,10 @@
 import React from 'react'
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
+import { Button } from './ui/button'
 import Image from 'next/image'
-import { TextEffect } from '@/components/motion-primitives/text-effect'
-import { AnimatedGroup } from '@/components/motion-primitives/animated-group'
-import { HeroHeader } from '@/components/hero5-header'
+import { TextEffect } from './motion-primitives/text-effect'
+import { AnimatedGroup } from './motion-primitives/animated-group'
+import { HeroHeader } from './hero5-header'
 
 const transitionVariants = {
     item: {

@@ -1,8 +1,8 @@
-import { Button } from '@/components/ui/button'
+import { Button } from './ui/button'
 import { SendHorizonal } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { AnimatedGroup } from '@/components/motion-primitives/animated-group'
+import { AnimatedGroup } from './motion-primitives/animated-group'
 
 export default function CallToAction() {
     return (
