@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button'
-import { Mail, SendHorizonal } from 'lucide-react'
+import { SendHorizonal } from 'lucide-react'
+import Link from 'next/link'
 
 export default function CallToAction() {
     return (
@@ -8,20 +9,19 @@ export default function CallToAction() {
                 <div className="text-center">
                     <h2 className="text-balance text-4xl font-semibold lg:text-5xl">Ready to make smarter software decisions?</h2>
 
-                    <form action="" className="mx-auto mt-10 max-w-sm lg:mt-12">
-                        <div className="bg-background has-[input:focus]:ring-muted relative grid grid-cols-[1fr_auto] items-center rounded-[calc(var(--radius)+0.75rem)] border pr-3 shadow shadow-zinc-950/5 has-[input:focus]:ring-2">
-                            <Mail className="text-caption pointer-events-none absolute inset-y-0 left-5 my-auto size-5" />
-
-                            <input placeholder="Your mail address" className="h-14 w-full bg-transparent pl-12 focus:outline-none" type="email" />
-
-                            <div className="md:pr-1.5 lg:pr-0">
-                                <Button aria-label="submit" className="rounded-(--radius)">
-                                    <span className="hidden md:block">Join the Waitlist</span>
-                                    <SendHorizonal className="relative mx-auto size-5 md:hidden" strokeWidth={2} />
-                                </Button>
-                            </div>
+                    <div className="mt-10 flex justify-center lg:mt-12">
+                        <div className="bg-foreground/10 rounded-[var(--radius)] border p-0.5">
+                            <Button
+                                asChild
+                                size="lg"
+                                className="px-5 text-base">
+                                <Link href="/waitlist">
+                                    <span className="text-nowrap">Join the Waitlist</span>
+                                    <SendHorizonal className="relative size-5 md:hidden" strokeWidth={2} />
+                                </Link>
+                            </Button>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </section>

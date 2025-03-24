@@ -25,7 +25,7 @@ export const HeroHeader = () => {
                         <Link
                             href="/"
                             aria-label="home"
-                            className="flex items-center space-x-2">
+                            className="flex items-center space-x-2 py-1">
                             <Logo />
                         </Link>
 
@@ -34,7 +34,7 @@ export const HeroHeader = () => {
                                 asChild
                                 size="lg"
                                 className="px-5 text-base">
-                                <Link href="#contact">
+                                <Link href="/contact">
                                     <span className="text-nowrap">Contact us</span>
                                 </Link>
                             </Button>
