@@ -135,7 +135,6 @@ export function TextEffect({
       visible: {
         ...baseVariants.container.visible,
         transition: {
-          ...baseVariants.container.visible.transition,
           delayChildren: delay,
           staggerChildren: stagger,
           ...containerTransition,

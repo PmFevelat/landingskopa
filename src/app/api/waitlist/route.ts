@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { resend } from '@/lib/resend';
-import WaitlistEmail from '@/emails/waitlist-email';
+import { resend } from '../../../lib/resend';
+import WaitlistEmail from '../../../emails/waitlist-email';
 
 // Vérification que les modules sont bien chargés
 if (!resend) {
