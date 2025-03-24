@@ -12,8 +12,8 @@ import {
 
 export type AnimatedBackgroundProps = {
   children:
-    | ReactElement<{ 'data-id': string }>[]
-    | ReactElement<{ 'data-id': string }>;
+    | ReactElement<{ 'data-id': string; className?: string; children?: React.ReactNode }>[]
+    | ReactElement<{ 'data-id': string; className?: string; children?: React.ReactNode }>;
   defaultValue?: string;
   onValueChange?: (newActiveId: string | null) => void;
   className?: string;
@@ -46,7 +46,7 @@ export function AnimatedBackground({
     }
   }, [defaultValue]);
 
-  return Children.map(children, (child: any, index) => {
+  return Children.map(children, (child: ReactElement<{ 'data-id': string; className?: string; children?: React.ReactNode }>, index) => {
     const id = child.props['data-id'];
 
     const interactionProps = enableHover
