@@ -35,7 +35,7 @@ export default function ContactForm() {
             setEmail("");
             setName("");
             setMessage("");
-        } catch (_error) {
+        } catch (error) {
             setSubmitStatus("error");
         } finally {
             setIsSubmitting(false);

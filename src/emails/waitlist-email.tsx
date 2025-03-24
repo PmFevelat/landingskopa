@@ -1,29 +1,14 @@
 import { Html, Head, Body, Container, Text, Hr } from '@react-email/components';
 
-interface WaitlistEmailProps {
-    name: string;
+interface EmailTemplateProps {
     email: string;
-    message?: string;
 }
 
-export default function WaitlistEmail({ name, email, message }: WaitlistEmailProps) {
+export default function WaitlistEmail({ email }: EmailTemplateProps) {
     return (
-        <Html>
-            <Head />
-            <Body style={{ fontFamily: 'system-ui' }}>
-                <Container>
-                    <Text>Nouvelle inscription à la liste d&apos;attente :</Text>
-                    <Hr />
-                    <Text><strong>Nom :</strong> {name}</Text>
-                    <Text><strong>Email :</strong> {email}</Text>
-                    {message && (
-                        <>
-                            <Text><strong>Message :</strong></Text>
-                            <Text>{message}</Text>
-                        </>
-                    )}
-                </Container>
-            </Body>
-        </Html>
+        <div>
+            <h1>Nouvelle inscription à la waitlist</h1>
+            <p>Email: {email}</p>
+        </div>
     );
 } 
