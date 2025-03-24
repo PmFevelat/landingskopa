@@ -1,12 +1,49 @@
 import { Button } from '@/components/ui/button'
 import { SendHorizonal } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
+import { AnimatedGroup } from '@/components/motion-primitives/animated-group'
 
 export default function CallToAction() {
     return (
-        <section className="py-16 md:py-32">
+        <section className="relative overflow-hidden py-16 md:py-32">
+            <AnimatedGroup
+                variants={{
+                    container: {
+                        visible: {
+                            transition: {
+                                delayChildren: 0.2,
+                            },
+                        },
+                    },
+                    item: {
+                        hidden: {
+                            opacity: 0,
+                            y: 20,
+                        },
+                        visible: {
+                            opacity: 1,
+                            y: 0,
+                            transition: {
+                                type: 'spring',
+                                bounce: 0.3,
+                                duration: 2,
+                            },
+                        },
+                    },
+                }}
+                className="absolute inset-0 -z-20">
+                <Image
+                    src="https://res.cloudinary.com/dg4jhba5c/image/upload/v1741605538/night-background_ni3vqb.jpg"
+                    alt="background"
+                    className="absolute inset-x-0 -z-20 brightness-50"
+                    fill
+                    style={{ objectFit: 'cover' }}
+                />
+            </AnimatedGroup>
+            <div className="absolute inset-0 -z-10 bg-gradient-to-t from-background via-background/80 to-background/20"></div>
             <div className="mx-auto max-w-5xl px-6">
-                <div className="text-center">
+                <div className="relative text-center">
                     <h2 className="text-balance text-4xl font-semibold lg:text-5xl">Ready to make smarter software decisions?</h2>
 
                     <div className="mt-10 flex justify-center lg:mt-12">

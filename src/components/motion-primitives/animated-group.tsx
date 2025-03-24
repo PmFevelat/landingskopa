@@ -1,19 +1,27 @@
 'use client';
 import { ReactNode } from 'react';
-import { motion, Variants } from 'motion/react';
+import { motion, Variants } from 'framer-motion';
 import React from 'react';
 
 export type PresetType =
-  | 'fade'
-  | 'slide'
-  | 'scale'
-  | 'blur'
-  | 'blur-slide'
-  | 'zoom'
-  | 'flip'
-  | 'bounce'
-  | 'rotate'
-  | 'swing';
+  | 'fadeIn'
+  | 'fadeInDown'
+  | 'fadeInLeft'
+  | 'fadeInRight'
+  | 'fadeInUp'
+  | 'fadeOut'
+  | 'fadeOutDown'
+  | 'fadeOutLeft'
+  | 'fadeOutRight'
+  | 'fadeOutUp'
+  | 'slideInDown'
+  | 'slideInLeft'
+  | 'slideInRight'
+  | 'slideInUp'
+  | 'slideOutDown'
+  | 'slideOutLeft'
+  | 'slideOutRight'
+  | 'slideOutUp';
 
 export type AnimatedGroupProps = {
   children: ReactNode;
@@ -39,57 +47,74 @@ const defaultItemVariants: Variants = {
 };
 
 const presetVariants: Record<PresetType, Variants> = {
-  fade: {},
-  slide: {
-    hidden: { y: 20 },
+  fadeIn: {},
+  fadeInDown: {
+    hidden: { y: 20, opacity: 0 },
+    visible: { y: 0, opacity: 1 },
+  },
+  fadeInLeft: {
+    hidden: { x: -20, opacity: 0 },
+    visible: { x: 0, opacity: 1 },
+  },
+  fadeInRight: {
+    hidden: { x: 20, opacity: 0 },
+    visible: { x: 0, opacity: 1 },
+  },
+  fadeInUp: {
+    hidden: { y: -20, opacity: 0 },
+    visible: { y: 0, opacity: 1 },
+  },
+  fadeOut: {
+    hidden: { opacity: 1 },
+    visible: { opacity: 0 },
+  },
+  fadeOutDown: {
+    hidden: { y: 0, opacity: 1 },
+    visible: { y: 20, opacity: 0 },
+  },
+  fadeOutLeft: {
+    hidden: { x: 0, opacity: 1 },
+    visible: { x: -20, opacity: 0 },
+  },
+  fadeOutRight: {
+    hidden: { x: 0, opacity: 1 },
+    visible: { x: 20, opacity: 0 },
+  },
+  fadeOutUp: {
+    hidden: { y: 0, opacity: 1 },
+    visible: { y: -20, opacity: 0 },
+  },
+  slideInDown: {
+    hidden: { y: -100 },
     visible: { y: 0 },
   },
-  scale: {
-    hidden: { scale: 0.8 },
-    visible: { scale: 1 },
+  slideInLeft: {
+    hidden: { x: -100 },
+    visible: { x: 0 },
   },
-  blur: {
-    hidden: { filter: 'blur(4px)' },
-    visible: { filter: 'blur(0px)' },
+  slideInRight: {
+    hidden: { x: 100 },
+    visible: { x: 0 },
   },
-  'blur-slide': {
-    hidden: { filter: 'blur(4px)', y: 20 },
-    visible: { filter: 'blur(0px)', y: 0 },
+  slideInUp: {
+    hidden: { y: 100 },
+    visible: { y: 0 },
   },
-  zoom: {
-    hidden: { scale: 0.5 },
-    visible: {
-      scale: 1,
-      transition: { type: 'spring', stiffness: 300, damping: 20 },
-    },
+  slideOutDown: {
+    hidden: { y: 0 },
+    visible: { y: 100 },
   },
-  flip: {
-    hidden: { rotateX: -90 },
-    visible: {
-      rotateX: 0,
-      transition: { type: 'spring', stiffness: 300, damping: 20 },
-    },
+  slideOutLeft: {
+    hidden: { x: 0 },
+    visible: { x: -100 },
   },
-  bounce: {
-    hidden: { y: -50 },
-    visible: {
-      y: 0,
-      transition: { type: 'spring', stiffness: 400, damping: 10 },
-    },
+  slideOutRight: {
+    hidden: { x: 0 },
+    visible: { x: 100 },
   },
-  rotate: {
-    hidden: { rotate: -180 },
-    visible: {
-      rotate: 0,
-      transition: { type: 'spring', stiffness: 200, damping: 15 },
-    },
-  },
-  swing: {
-    hidden: { rotate: -10 },
-    visible: {
-      rotate: 0,
-      transition: { type: 'spring', stiffness: 300, damping: 8 },
-    },
+  slideOutUp: {
+    hidden: { y: 0 },
+    visible: { y: -100 },
   },
 };
 
@@ -98,33 +123,29 @@ const addDefaultVariants = (variants: Variants) => ({
   visible: { ...defaultItemVariants.visible, ...variants.visible },
 });
 
-function AnimatedGroup({
+export function AnimatedGroup({
   children,
   className,
   variants,
   preset,
 }: AnimatedGroupProps) {
-  const selectedVariants = {
-    item: addDefaultVariants(preset ? presetVariants[preset] : {}),
-    container: addDefaultVariants(defaultContainerVariants),
-  };
-  const containerVariants = variants?.container || selectedVariants.container;
-  const itemVariants = variants?.item || selectedVariants.item;
+  const containerVariants = variants?.container || defaultContainerVariants;
+  const itemVariants = variants?.item
+    ? addDefaultVariants(variants.item)
+    : preset
+    ? addDefaultVariants(presetVariants[preset])
+    : defaultItemVariants;
 
   return (
     <motion.div
-      initial='hidden'
-      animate='visible'
+      initial="hidden"
+      animate="visible"
       variants={containerVariants}
       className={className}
     >
-      {React.Children.map(children, (child, index) => (
-        <motion.div key={index} variants={itemVariants}>
-          {child}
-        </motion.div>
+      {React.Children.map(children, (child) => (
+        <motion.div variants={itemVariants}>{child}</motion.div>
       ))}
     </motion.div>
   );
 }
-
-export { AnimatedGroup };

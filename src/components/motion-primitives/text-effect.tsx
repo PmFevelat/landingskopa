@@ -4,29 +4,29 @@ import {
   AnimatePresence,
   motion,
   TargetAndTransition,
+  VariantLabels,
   Transition,
-  Variant,
   Variants,
-} from 'motion/react';
-import React from 'react';
+} from 'framer-motion';
+import { ReactNode } from 'react';
 
-export type PresetType = 'blur' | 'fade-in-blur' | 'scale' | 'fade' | 'slide';
+export type PresetType =
+  | 'fade'
+  | 'fade-in-blur'
+  | 'scale'
+  | 'slide';
 
-export type PerType = 'word' | 'char' | 'line';
+export type PerType = 'char' | 'word' | 'line';
 
 export type TextEffectProps = {
-  children: string;
-  per?: PerType;
-  as?: keyof React.JSX.IntrinsicElements;
-  variants?: {
-    container?: Variants;
-    item?: Variants;
-  };
+  children: ReactNode;
   className?: string;
+  as?: keyof React.JSX.IntrinsicElements;
   preset?: PresetType;
+  per?: PerType;
   delay?: number;
-  speedReveal?: number;
   speedSegment?: number;
+  speedReveal?: number;
   trigger?: boolean;
   onAnimationComplete?: () => void;
   onAnimationStart?: () => void;
@@ -67,14 +67,6 @@ const presetVariants: Record<
   PresetType,
   { container: Variants; item: Variants }
 > = {
-  blur: {
-    container: defaultContainerVariants,
-    item: {
-      hidden: { opacity: 0, filter: 'blur(12px)' },
-      visible: { opacity: 1, filter: 'blur(0px)' },
-      exit: { opacity: 0, filter: 'blur(12px)' },
-    },
-  },
   'fade-in-blur': {
     container: defaultContainerVariants,
     item: {
@@ -83,20 +75,20 @@ const presetVariants: Record<
       exit: { opacity: 0, y: 20, filter: 'blur(12px)' },
     },
   },
-  scale: {
-    container: defaultContainerVariants,
-    item: {
-      hidden: { opacity: 0, scale: 0 },
-      visible: { opacity: 1, scale: 1 },
-      exit: { opacity: 0, scale: 0 },
-    },
-  },
   fade: {
     container: defaultContainerVariants,
     item: {
       hidden: { opacity: 0 },
       visible: { opacity: 1 },
       exit: { opacity: 0 },
+    },
+  },
+  scale: {
+    container: defaultContainerVariants,
+    item: {
+      hidden: { opacity: 0, scale: 0 },
+      visible: { opacity: 1, scale: 1 },
+      exit: { opacity: 0, scale: 0 },
     },
   },
   slide: {
@@ -109,106 +101,15 @@ const presetVariants: Record<
   },
 };
 
-const AnimationComponent: React.FC<{
-  segment: string;
-  variants: Variants;
-  per: 'line' | 'word' | 'char';
-  segmentWrapperClassName?: string;
-}> = React.memo(({ segment, variants, per, segmentWrapperClassName }) => {
-  const content =
-    per === 'line' ? (
-      <motion.span variants={variants} className='block'>
-        {segment}
-      </motion.span>
-    ) : per === 'word' ? (
-      <motion.span
-        aria-hidden='true'
-        variants={variants}
-        className='inline-block whitespace-pre'
-      >
-        {segment}
-      </motion.span>
-    ) : (
-      <motion.span className='inline-block whitespace-pre'>
-        {segment.split('').map((char, charIndex) => (
-          <motion.span
-            key={`char-${charIndex}`}
-            aria-hidden='true'
-            variants={variants}
-            className='inline-block whitespace-pre'
-          >
-            {char}
-          </motion.span>
-        ))}
-      </motion.span>
-    );
-
-  if (!segmentWrapperClassName) {
-    return content;
-  }
-
-  const defaultWrapperClassName = per === 'line' ? 'block' : 'inline-block';
-
-  return (
-    <span className={cn(defaultWrapperClassName, segmentWrapperClassName)}>
-      {content}
-    </span>
-  );
-});
-
-AnimationComponent.displayName = 'AnimationComponent';
-
-const splitText = (text: string, per: 'line' | 'word' | 'char') => {
+const splitText = (text: string, per: PerType) => {
   if (per === 'line') return text.split('\n');
   return text.split(/(\s+)/);
-};
-
-const hasTransition = (
-  variant: Variant
-): variant is TargetAndTransition & { transition?: Transition } => {
-  return (
-    typeof variant === 'object' && variant !== null && 'transition' in variant
-  );
-};
-
-const createVariantsWithTransition = (
-  baseVariants: Variants,
-  transition?: Transition & { exit?: Transition }
-): Variants => {
-  if (!transition) return baseVariants;
-
-  const { exit, ...mainTransition } = transition;
-
-  return {
-    ...baseVariants,
-    visible: {
-      ...baseVariants.visible,
-      transition: {
-        ...(hasTransition(baseVariants.visible)
-          ? baseVariants.visible.transition
-          : {}),
-        ...mainTransition,
-      },
-    },
-    exit: {
-      ...baseVariants.exit,
-      transition: {
-        ...(hasTransition(baseVariants.exit)
-          ? baseVariants.exit.transition
-          : {}),
-        ...exit,
-        staggerDirection: -1,
-      },
-    },
-  };
 };
 
 export function TextEffect({
   children,
   per = 'word',
   as = 'p',
-  variants,
-  className,
   preset = 'fade',
   delay = 0,
   speedReveal = 1,
@@ -220,69 +121,61 @@ export function TextEffect({
   containerTransition,
   segmentTransition,
   style,
+  className,
 }: TextEffectProps) {
-  const segments = splitText(children, per);
+  const segments = splitText(children as string, per);
   const MotionTag = motion[as as keyof typeof motion] as typeof motion.div;
 
-  const baseVariants = preset
-    ? presetVariants[preset]
-    : { container: defaultContainerVariants, item: defaultItemVariants };
-
+  const baseVariants = presetVariants[preset];
   const stagger = defaultStaggerTimes[per] / speedReveal;
 
-  const baseDuration = 0.3 / speedSegment;
-
-  const customStagger = hasTransition(variants?.container?.visible ?? {})
-    ? (variants?.container?.visible as TargetAndTransition).transition
-        ?.staggerChildren
-    : undefined;
-
-  const customDelay = hasTransition(variants?.container?.visible ?? {})
-    ? (variants?.container?.visible as TargetAndTransition).transition
-        ?.delayChildren
-    : undefined;
-
   const computedVariants = {
-    container: createVariantsWithTransition(
-      variants?.container || baseVariants.container,
-      {
-        staggerChildren: customStagger ?? stagger,
-        delayChildren: customDelay ?? delay,
-        ...containerTransition,
-        exit: {
-          staggerChildren: customStagger ?? stagger,
-          staggerDirection: -1,
+    container: {
+      ...baseVariants.container,
+      visible: {
+        ...baseVariants.container.visible,
+        transition: {
+          ...baseVariants.container.visible.transition,
+          delayChildren: delay,
+          staggerChildren: stagger,
+          ...containerTransition,
         },
-      }
-    ),
-    item: createVariantsWithTransition(variants?.item || baseVariants.item, {
-      duration: baseDuration,
-      ...segmentTransition,
-    }),
+      },
+    },
+    item: {
+      ...baseVariants.item,
+      visible: {
+        ...baseVariants.item.visible,
+        transition: {
+          duration: 0.3 / speedSegment,
+          ...segmentTransition,
+        },
+      },
+    },
   };
 
   return (
-    <AnimatePresence mode='popLayout'>
+    <AnimatePresence mode="popLayout">
       {trigger && (
         <MotionTag
-          initial='hidden'
-          animate='visible'
-          exit='exit'
+          initial="hidden"
+          animate="visible"
+          exit="exit"
           variants={computedVariants.container}
           className={className}
           onAnimationComplete={onAnimationComplete}
           onAnimationStart={onAnimationStart}
           style={style}
         >
-          {per !== 'line' ? <span className='sr-only'>{children}</span> : null}
+          {per !== 'line' ? <span className="sr-only">{children}</span> : null}
           {segments.map((segment, index) => (
-            <AnimationComponent
+            <motion.span
               key={`${per}-${index}-${segment}`}
-              segment={segment}
               variants={computedVariants.item}
-              per={per}
-              segmentWrapperClassName={segmentWrapperClassName}
-            />
+              className={cn('inline-block', segmentWrapperClassName)}
+            >
+              {segment}
+            </motion.span>
           ))}
         </MotionTag>
       )}
